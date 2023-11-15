@@ -1,16 +1,16 @@
 #include "shell.h"
 
 /**
- * sj_get_env - returns the string array copy of our environ
+ * sj_get_environ - returns the string array copy of our environ
  * @info: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
  * Return: Always 0
  */
-char **sj_get_env(info_tree *info)
+char **sj_get_environ(info_t *info)
 {
 	if (!info->environ || info->env_changed)
 	{
-		info->environ = sj_ltree_str(info->env);
+		info->environ = list_to_strings(info->env);
 		info->env_changed = 0;
 	}
 
@@ -18,15 +18,15 @@ char **sj_get_env(info_tree *info)
 }
 
 /**
- * sj_unset_envchr - Remove an environment variable
+ * sj_unsetenv - Remove an environment variable
  * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  *  Return: 1 on delete, 0 otherwise
  * @var: the string env var property
  */
-int sj_unset_envchr(info_tree *info, char *var)
+int sj_unsetenv(info_t *info, char *var)
 {
-	l_tree *node = info->env;
+	list_t *node = info->env;
 	size_t i = 0;
 	char *p;
 
@@ -35,10 +35,10 @@ int sj_unset_envchr(info_tree *info, char *var)
 
 	while (node)
 	{
-		p = sj_starts_with(node->str, var);
+		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			info->env_changed = sj_del_node(&(info->env), i);
+			info->env_changed = sj_delete_node_at_index(&(info->env), i);
 			i = 0;
 			node = info->env;
 			continue;
@@ -50,7 +50,7 @@ int sj_unset_envchr(info_tree *info, char *var)
 }
 
 /**
- * sj_set_envchr - Initialize a new environment variable,
+ * sj_setenv - Initialize a new environment variable,
  *             or modify an existing one
  * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
@@ -58,21 +58,21 @@ int sj_unset_envchr(info_tree *info, char *var)
  * @value: the string env var value
  *  Return: Always 0
  */
-int sj_set_envchr(info_tree *info, char *var, char *value)
+int sj_setenv(info_t *info, char *var, char *value)
 {
 	char *buf = NULL;
-	l_tree *node;
+	list_t *node;
 	char *p;
 
 	if (!var || !value)
 		return (0);
 
-	buf = malloc(sj_get_strlen(var) + sj_get_strlen(value) + 2);
+	buf = malloc(_strlen(var) + sj_strlen(value) + 2);
 	if (!buf)
 		return (1);
-	sj_strcopy(buf, var);
-	_strcat(buf, "=");
-	_strcat(buf, value);
+	sj_strcpy(buf, var);
+	sj_strcat(buf, "=");
+	sj_strcat(buf, value);
 	node = info->env;
 	while (node)
 	{
@@ -86,7 +86,7 @@ int sj_set_envchr(info_tree *info, char *var, char *value)
 		}
 		node = node->next;
 	}
-	sj_node_add_end(&(info->env), buf, 0);
+	sj_add_node_end(&(info->env), buf, 0);
 	free(buf);
 	info->env_changed = 1;
 	return (0);

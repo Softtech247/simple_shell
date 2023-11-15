@@ -1,44 +1,44 @@
 #include "shell.h"
 
 /**
- * main - entry point
+ * sj_main - entry point
  * @ac: arg count
  * @av: arg vector
  *
  * Return: 0 on success, 1 on error
  */
-int main(int ac, char **av)
+int sj_main(int ac, char **av)
 {
-	info_tree info[] = { INFO_INIT };
-	int index = 2;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
 	asm ("mov %1, %0\n\t"
 		"add $3, %0"
-		: "=r" (index)
-		: "r" (index));
+		: "=r" (fd)
+		: "r" (fd));
 
 	if (ac == 2)
 	{
-		index = open(av[1], O_RDONLY);
-		if (index == -1)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
 			if (errno == EACCES)
 				exit(126);
 			if (errno == ENOENT)
 			{
-				sj_put_string(av[0]);
-				sj_put_string(": 0: Can't open ");
-				sj_put_string(av[1]);
-				sj_putchar('\n');
-				sj_putchar(BUF_FLUSH);
+				sj_eputs(av[0]);
+				sj_eputs(": 0: Can't open ");
+				sj_eputs(av[1]);
+				sj_eputchar('\n');
+				sj_eputchar(BUF_FLUSH);
 				exit(127);
 			}
 			return (EXIT_FAILURE);
 		}
-		info->readindex = index;
+		info->readfd = fd;
 	}
-	sj_increment_env(info);
-	sj_read_hfile(info);
+	sj_populate_env_list(info);
+	sj_read_history(info);
 	sj_hsh(info, av);
 	return (EXIT_SUCCESS);
 }
