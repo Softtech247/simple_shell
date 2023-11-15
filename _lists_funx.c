@@ -17,11 +17,11 @@ list_t *sj_add_node(list_t **head, const char *str, int num)
 	new_head = malloc(sizeof(list_t));
 	if (!new_head)
 		return (NULL);
-	_memset((void *)new_head, 0, sizeof(list_t));
+	sj_memset((void *)new_head, 0, sizeof(list_t));
 	new_head->num = num;
 	if (str)
 	{
-		new_head->str = _strdup(str);
+		new_head->str = sj_strdup(str);
 		if (!new_head->str)
 		{
 			free(new_head);
@@ -86,8 +86,8 @@ size_t sj_print_list_str(const list_t *h)
 
 	while (h)
 	{
-		_puts(h->str ? h->str : "(nil)");
-		_puts("\n");
+		sj_puts(h->str ? h->str : "(nil)");
+		sj_puts("\n");
 		h = h->next;
 		i++;
 	}

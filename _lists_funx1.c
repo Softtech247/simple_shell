@@ -38,7 +38,7 @@ char **sj_list_to_strings(list_t *head)
 		return (NULL);
 	for (i = 0; node; node = node->next, i++)
 	{
-		str = malloc(_strlen(node->str) + 1);
+		str = malloc(sj_strlen(node->str) + 1);
 		if (!str)
 		{
 			for (j = 0; j < i; j++)
@@ -67,7 +67,7 @@ size_t sj_print_list(const list_t *h)
 
 	while (h)
 	{
-		sj_puts(convert_number(h->num, 10, 0));
+		sj_puts(sj_convert_number(h->num, 10, 0));
 		sj_putchar(':');
 		sj_putchar(' ');
 		sj_puts(h->str ? h->str : "(nil)");
@@ -92,7 +92,7 @@ list_t *sj_node_starts_with(list_t *node, char *prefix, char c)
 
 	while (node)
 	{
-		p = starts_with(node->str, prefix);
+		p = sj_starts_with(node->str, prefix);
 		if (p && ((c == -1) || (*p == c)))
 			return (node);
 		node = node->next;

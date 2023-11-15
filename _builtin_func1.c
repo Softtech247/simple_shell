@@ -9,7 +9,7 @@
  */
 int sj_myhistory(info_t *info)
 {
-	print_list(info->history);
+	sj_print_list(info->history);
 	return (0);
 }
 
@@ -25,13 +25,13 @@ int sj_unset_alias(info_t *info, char *str)
 	char *p, c;
 	int ret;
 
-	p = _strchr(str, '=');
+	p = sj_strchr(str, '=');
 	if (!p)
 		return (1);
 	c = *p;
 	*p = 0;
-	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	ret = sj_delete_node_at_index(&(info->alias),
+		sj_get_node_index(info->alias, sj_node_starts_with(info->alias, str, -1)));
 	*p = c;
 	return (ret);
 }
@@ -54,7 +54,7 @@ int sj_set_alias(info_t *info, char *str)
 		return (sj_unset_alias(info, str));
 
 	sj_unset_alias(info, str);
-	return (add_node_end(&(info->alias), str, 0) == NULL);
+	return (sj_add_node_end(&(info->alias), str, 0) == NULL);
 }
 
 /**
@@ -108,7 +108,7 @@ int sj_myalias(info_t *info)
 		if (p)
 			sj_set_alias(info, info->argv[i]);
 		else
-			sj_print_alias(node_starts_with(info->alias, info->argv[i], '='));
+			sj_print_alias(sj_node_starts_with(info->alias, info->argv[i], '='));
 	}
 
 	return (0);

@@ -79,7 +79,7 @@ int sj_putsfd(char *str, int fd)
 		return (0);
 	while (*str)
 	{
-		i += _putfd(*str++, fd);
+		i += sj_putfd(*str++, fd);
 	}
 	return (i);
 }

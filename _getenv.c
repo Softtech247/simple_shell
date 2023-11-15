@@ -10,7 +10,7 @@ char **sj_get_environ(info_t *info)
 {
 	if (!info->environ || info->env_changed)
 	{
-		info->environ = list_to_strings(info->env);
+		info->environ = sj_list_to_strings(info->env);
 		info->env_changed = 0;
 	}
 
@@ -35,7 +35,7 @@ int sj_unsetenv(info_t *info, char *var)
 
 	while (node)
 	{
-		p = starts_with(node->str, var);
+		p = sj_starts_with(node->str, var);
 		if (p && *p == '=')
 		{
 			info->env_changed = sj_delete_node_at_index(&(info->env), i);
@@ -67,7 +67,7 @@ int sj_setenv(info_t *info, char *var, char *value)
 	if (!var || !value)
 		return (0);
 
-	buf = malloc(_strlen(var) + sj_strlen(value) + 2);
+	buf = malloc(sj_strlen(var) + sj_strlen(value) + 2);
 	if (!buf)
 		return (1);
 	sj_strcpy(buf, var);

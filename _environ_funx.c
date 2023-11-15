@@ -1,14 +1,14 @@
 #include "shell.h"
 
 /**
- * _myenv - prints the current environment
+ * sj_myenv - prints the current environment
  * @info: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
  * Return: Always 0
  */
 int sj_myenv(info_t *info)
 {
-	print_list_str(info->env);
+	sj_print_list_str(info->env);
 	return (0);
 }
 
@@ -86,7 +86,7 @@ int sj_populate_env_list(info_t *info)
 	size_t i;
 
 	for (i = 0; environ[i]; i++)
-		add_node_end(&node, environ[i], 0);
+		sj_add_node_end(&node, environ[i], 0);
 	info->env = node;
 	return (0);
 }

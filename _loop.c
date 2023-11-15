@@ -15,7 +15,7 @@ int sj_hsh(info_t *info, char **av)
 	while (r != -1 && builtin_ret != -2)
 	{
 		sj_clear_info(info);
-		if (interactive(info))
+		if (sj_interactive(info))
 			sj_puts("$ ");
 		sj_eputchar(BUF_FLUSH);
 		r = sj_get_input(info);
@@ -26,13 +26,13 @@ int sj_hsh(info_t *info, char **av)
 			if (builtin_ret == -1)
 				sj_find_cmd(info);
 		}
-		else if (interactive(info))
+		else if (sj_interactive(info))
 			sj_putchar('\n');
 		sj_free_info(info, 0);
 	}
 	sj_write_history(info);
 	sj_free_info(info, 1);
-	if (!interactive(info) && info->status)
+	if (!sj_interactive(info) && info->status)
 		exit(info->status);
 	if (builtin_ret == -2)
 	{
@@ -56,19 +56,19 @@ int sj_find_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit", _myexit},
-		{"env", _myenv},
-		{"help", _myhelp},
-		{"history", _myhistory},
-		{"setenv", _mysetenv},
-		{"unsetenv", _myunsetenv},
-		{"cd", _mycd},
-		{"alias", _myalias},
+		{"exit", sj_myexit},
+		{"env", sj_myenv},
+		{"help", sj_myhelp},
+		{"history", sj_myhistory},
+		{"setenv", sj_mysetenv},
+		{"unsetenv", sj_myunsetenv},
+		{"cd", sj_mycd},
+		{"alias", sj_myalias},
 		{NULL, NULL}
 	};
 
 	for (i = 0; builtintbl[i].type; i++)
-		if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
+		if (sj_strcmp(info->argv[0], builtintbl[i].type) == 0)
 		{
 			info->line_count++;
 			built_in_ret = builtintbl[i].func(info);
@@ -95,12 +95,12 @@ void sj_find_cmd(info_t *info)
 		info->linecount_flag = 0;
 	}
 	for (i = 0, k = 0; info->arg[i]; i++)
-		if (!is_delim(info->arg[i], " \t\n"))
+		if (!sj_is_delim(info->arg[i], " \t\n"))
 			k++;
 	if (!k)
 		return;
 
-	path = sj_find_path(info, _getenv(info, "PATH="), info->argv[0]);
+	path = sj_find_path(info, sj_getenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
 		info->path = path;
@@ -108,7 +108,7 @@ void sj_find_cmd(info_t *info)
 	}
 	else
 	{
-		if ((interactive(info) || sj_getenv(info, "PATH=")
+		if ((sj_interactive(info) || sj_getenv(info, "PATH=")
 			|| info->argv[0][0] == '/') && sj_is_cmd(info, info->argv[0]))
 			sj_fork_cmd(info);
 		else if (*(info->arg) != '\n')
@@ -129,7 +129,7 @@ void sj_fork_cmd(info_t *info)
 {
 	pid_t child_pid;
 
-	child_pid = sj_fork();
+	child_pid = vfork();
 	if (child_pid == -1)
 	{
 		/* TODO: PUT ERROR FUNCTION */
@@ -154,7 +154,7 @@ void sj_fork_cmd(info_t *info)
 		{
 			info->status = WEXITSTATUS(info->status);
 			if (info->status == 126)
-				print_error(info, "Permission denied\n");
+				sj_print_error(info, "Permission denied\n");
 		}
 	}
 }

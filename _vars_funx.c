@@ -117,20 +117,20 @@ int sj_replace_vars(info_t *info)
 		if (!sj_strcmp(info->argv[i], "$?"))
 		{
 			sj_replace_string(&(info->argv[i]),
-				sj_strdup(convert_number(info->status, 10, 0)));
+				sj_strdup(sj_convert_number(info->status, 10, 0)));
 			continue;
 		}
 		if (!sj_strcmp(info->argv[i], "$$"))
 		{
 			sj_replace_string(&(info->argv[i]),
-				sj_strdup(convert_number(getpid(), 10, 0)));
+				sj_strdup(sj_convert_number(getpid(), 10, 0)));
 			continue;
 		}
-		node = node_starts_with(info->env, &info->argv[i][1], '=');
+		node = sj_node_starts_with(info->env, &info->argv[i][1], '=');
 		if (node)
 		{
 			sj_replace_string(&(info->argv[i]),
-				sj_strdup(_strchr(node->str, '=') + 1));
+				sj_strdup(sj_strchr(node->str, '=') + 1));
 			continue;
 		}
 		sj_replace_string(&info->argv[i], sj_strdup(""));

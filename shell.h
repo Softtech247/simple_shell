@@ -113,7 +113,7 @@ typedef struct builtin
 
 /* toem_shloop.c */
 int sj_hsh(info_t *, char **);
-int sh_find_builtin(info_t *);
+int sj_find_builtin(info_t *);
 void sj_find_cmd(info_t *);
 void sj_fork_cmd(info_t *);
 
@@ -154,7 +154,7 @@ char **sj_strtow2(char *, char);
 
 /* toem_realloc.c */
 char *sj_memset(char *, char, unsigned int);
-void ffree(char **);
+void sj_ffree(char **);
 void *_realloc(void *, unsigned int, unsigned int);
 
 /* toem_memory.c */
@@ -222,7 +222,7 @@ void sj_free_list(list_t **);
 size_t sj_list_len(const list_t *);
 char **sj_list_to_strings(list_t *);
 size_t sj_print_list(const list_t *);
-list_t *node_starts_with(list_t *, char *, char);
+list_t *sj_node_starts_with(list_t *, char *, char);
 ssize_t sj_get_node_index(list_t *, list_t *);
 
 /* toem_vars.c */

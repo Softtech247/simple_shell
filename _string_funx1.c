@@ -59,7 +59,7 @@ void sj_puts(char *str)
 		return;
 	while (str[i] != '\0')
 	{
-		_putchar(str[i]);
+		sj_putchar(str[i]);
 		i++;
 	}
 }

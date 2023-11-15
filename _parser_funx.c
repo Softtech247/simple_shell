@@ -57,7 +57,7 @@ char *sj_find_path(info_t *info, char *pathstr, char *cmd)
 
 	if (!pathstr)
 		return (NULL);
-	if ((sj_strlen(cmd) > 2) && starts_with(cmd, "./"))
+	if ((sj_strlen(cmd) > 2) && sj_starts_with(cmd, "./"))
 	{
 		if (sj_is_cmd(info, cmd))
 			return (cmd);
@@ -71,7 +71,7 @@ char *sj_find_path(info_t *info, char *pathstr, char *cmd)
 				sj_strcat(path, cmd);
 			else
 			{
-				sh_strcat(path, "/");
+				sj_strcat(path, "/");
 				sj_strcat(path, cmd);
 			}
 			if (sj_is_cmd(info, path))

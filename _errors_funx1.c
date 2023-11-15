@@ -55,12 +55,12 @@ void sj_print_error(info_t *info, char *estr)
  */
 int sj_print_d(int input, int fd)
 {
-	int (*__putchar)(char) = _putchar;
+	int (*__putchar)(char) = sj_putchar;
 	int i, count = 0;
 	unsigned int _abs_, current;
 
 	if (fd == STDERR_FILENO)
-		__putchar = _eputchar;
+		__putchar = sj_eputchar;
 	if (input < 0)
 	{
 		_abs_ = -input;
