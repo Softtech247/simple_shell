@@ -59,7 +59,7 @@ int sj_write_history(info_t *info)
  *
  * Return: histcount on success, 0 otherwise
  */
-int read_history(info_t *info)
+int sj_read_history(info_t *info)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
@@ -110,7 +110,7 @@ int read_history(info_t *info)
  *
  * Return: Always 0
  */
-int build_history_list(info_t *info, char *buf, int linecount)
+int sj_build_history_list(info_t *info, char *buf, int linecount)
 {
 	list_t *node = NULL;
 
@@ -129,7 +129,7 @@ int build_history_list(info_t *info, char *buf, int linecount)
  *
  * Return: the new histcount
  */
-int renumber_history(info_t *info)
+int sj_renumber_history(info_t *info)
 {
 	list_t *node = info->history;
 	int i = 0;

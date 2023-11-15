@@ -117,7 +117,7 @@ ssize_t sj_read_buf(info_t *info, char *buf, size_t *i)
  *
  * Return: s
  */
-int _getline(info_t *info, char **ptr, size_t *length)
+int sj_getline(info_t *info, char **ptr, size_t *length)
 {
 	static char buf[READ_BUF_SIZE];
 	static size_t i, len;
@@ -137,7 +137,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
 
 	c = sj_strchr(buf + i, '\n');
 	k = c ? 1 + (unsigned int)(c - buf) : len;
-	new_p = _realloc(p, s, s ? s + k : k + 1);
+	new_p = sj_realloc(p, s, s ? s + k : k + 1);
 	if (!new_p) /* MALLOC FAILURE! */
 		return (p ? free(p), -1 : -1);
 

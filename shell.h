@@ -155,7 +155,7 @@ char **sj_strtow2(char *, char);
 /* toem_realloc.c */
 char *sj_memset(char *, char, unsigned int);
 void sj_ffree(char **);
-void *_realloc(void *, unsigned int, unsigned int);
+void *sj_realloc(void *, unsigned int, unsigned int);
 
 /* toem_memory.c */
 int sj_bfree(void **);

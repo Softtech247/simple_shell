@@ -35,7 +35,7 @@ int sj_myexit(info_t *info)
  *          constant function prototype.
  *  Return: Always 0
  */
-int _mycd(info_t *info)
+int sj_mycd(info_t *info)
 {
 	char *s, *dir, buffer[1024];
 	int chdir_ret;
